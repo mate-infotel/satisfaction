@@ -9,14 +9,18 @@ function plugin_satisfaction_install() {
    include_once(GLPI_ROOT . "/plugins/satisfaction/inc/profile.class.php");
 
    if (!$DB->tableExists("glpi_plugin_satisfaction_surveys")) {
-      $DB->runFile(GLPI_ROOT . "/plugins/satisfaction/install/sql/empty-1.2.2.sql");
+      $DB->runFile(GLPI_ROOT . "/plugins/satisfaction/install/sql/empty-1.2.3.sql");
    } else {
       if (!$DB->fieldExists("glpi_plugin_satisfaction_surveyquestions", "type")) {
          $DB->runFile(GLPI_ROOT . "/plugins/satisfaction/install/sql/update-1.1.0.sql");
       }
-      //version 1.2.1
+      //version 1.2.2
       if (!$DB->fieldExists("glpi_plugin_satisfaction_surveyquestions", "default_value")) {
          $DB->runFile(GLPI_ROOT . "/plugins/satisfaction/install/sql/update-1.2.2.sql");
+      }
+      //version 1.2.3
+      if (!$DB->tableExists("glpi_plugin_satisfaction_surveytranslations")) {
+         $DB->runFile(GLPI_ROOT . "/plugins/satisfaction/install/sql/update-1.2.3.sql");
       }
    }
 

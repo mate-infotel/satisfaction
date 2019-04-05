@@ -1,5 +1,10 @@
 <?php
 
+if (!defined('GLPI_ROOT')) {
+   die("Sorry. You can't access this file directly");
+}
+
+
 /**
  * Class PluginSatisfactionSurvey
  */
@@ -7,6 +12,8 @@ class PluginSatisfactionSurvey extends CommonDBTM {
 
    static $rightname = "plugin_satisfaction";
    public $dohistory = true;
+
+   public $can_be_translated = true;
 
    /**
     * Return the localized name of the current Type
@@ -34,8 +41,36 @@ class PluginSatisfactionSurvey extends CommonDBTM {
       $this->addDefaultFormTab($ong);
       $this->addStandardTab('PluginSatisfactionSurveyQuestion', $ong, $options);
       $this->addStandardTab('PluginSatisfactionSurveyAnswer', $ong, $options);
+      $this->addStandardTab('PluginSatisfactionSurveyTranslation', $ong, $options);
+
       $this->addStandardTab('Log', $ong, $options);
       return $ong;
+   }
+
+   /**
+    * Is translation enabled for this itemtype
+    *
+    * @return true if translation is available, false otherwise
+    **/
+   function maybeTranslated () {
+      return $this->can_be_translated;
+   }
+
+   /**
+    * Have I the right to "create" the Object
+    *
+    * Default is true and check entity if the objet is entity assign
+    *
+    * May be overloaded if needed
+    *
+    * @return boolean
+    **/
+   function canCreateItem() {
+
+      if (!$this->checkEntity()) {
+         return false;
+      }
+      return true;
    }
 
    /**
